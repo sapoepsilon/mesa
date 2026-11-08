@@ -129,12 +129,25 @@ interpolate_channel(nir_builder *b, nir_intrinsic_instr *load, unsigned channel)
       .io_semantics = nir_intrinsic_io_semantics(load));
 
    if (load->intrinsic == nir_intrinsic_load_input) {
-      assert(load->def.bit_size == 32);
-
       if (nir_intrinsic_io_semantics(load).location == VARYING_SLOT_LAYER)
-         return nir_load_layer_id(b);
+         return nir_u2uN(b, nir_load_layer_id(b), load->def.bit_size);
+
+      /* The coefficient registers hold 32-bit varyings: the vertex side
+       * widens 16-bit outputs by type before st_vary (agx_nir_lower_uvs).
+       * A 16-bit flat input (e.g. a SPIR-V Float16 varying decorated Flat)
+       * therefore reads a 32-bit value and must narrow it by its type, as
+       * the interpolated path below does with f2fN. Returning the 32-bit
+       * value for a 16-bit load left a mismatched def that the backend
+       * later failed to pack ("unaligned reg"), aborting the compile.
+       */
+      nir_def *flat = interpolate_flat(b, coefficients);
+      if (load->def.bit_size == 32)
+         return flat;
+      else if (nir_alu_type_get_base_type(nir_intrinsic_dest_type(load)) ==
+               nir_type_float)
+         return nir_f2fN(b, flat, load->def.bit_size);
       else
-         return interpolate_flat(b, coefficients);
+         return nir_u2uN(b, flat, load->def.bit_size);
    } else {
       nir_intrinsic_instr *bary = nir_src_as_intrinsic(load->src[0]);
 
