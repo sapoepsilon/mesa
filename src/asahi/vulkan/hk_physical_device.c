@@ -166,6 +166,7 @@ hk_get_device_extensions(const struct hk_instance *instance,
       .EXT_extended_dynamic_state2 = true,
       .EXT_extended_dynamic_state3 = true,
       .EXT_external_memory_dma_buf = true,
+      .EXT_fragment_shader_interlock = true,
       .EXT_global_priority = true,
       .EXT_global_priority_query = true,
       .EXT_graphics_pipeline_library = true,
@@ -558,6 +559,12 @@ hk_get_device_features(
       .extendedDynamicState3CoverageReductionMode = false,
       .extendedDynamicState3RepresentativeFragmentTestEnable = false,
       .extendedDynamicState3ShadingRateImageEnable = false,
+
+      /* VK_EXT_fragment_shader_interlock (local: wait_pix orders a pixel's
+       * fragments, as the gallium driver's spilled render targets rely on) */
+      .fragmentShaderSampleInterlock = false,
+      .fragmentShaderPixelInterlock = true,
+      .fragmentShaderShadingRateInterlock = false,
 
       /* VK_EXT_graphics_pipeline_library */
       .graphicsPipelineLibrary = true,

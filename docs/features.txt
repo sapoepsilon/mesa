@@ -652,7 +652,7 @@ Khronos extensions that are not part of any Vulkan version:
   VK_EXT_filter_cubic                                   DONE (tu/a650+, vn)
   VK_EXT_fragment_density_map                           DONE (tu)
   VK_EXT_fragment_density_map_offset                    DONE (tu)
-  VK_EXT_fragment_shader_interlock                      DONE (anv, lvp, radv/gfx9+, vn)
+  VK_EXT_fragment_shader_interlock                      DONE (anv, hk, lvp, radv/gfx9+, vn)
   VK_EXT_global_priority                                DONE (anv, hasvk, kk, panvk, pvr, radv, tu, vn, hk, lvp)
   VK_EXT_global_priority_query                          DONE (anv, hasvk, kk, panvk, pvr, radv, tu, vn, hk, lvp)
   VK_EXT_graphics_pipeline_library                      DONE (anv, hk, lvp, nvk, panvk, radv, tu, vn)

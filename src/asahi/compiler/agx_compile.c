@@ -1603,6 +1603,10 @@ agx_emit_intrinsic(agx_builder *b, nir_intrinsic_instr *instr)
       return NULL;
    }
 
+   case nir_intrinsic_end_invocation_interlock:
+      /* The pixel is released when the fragment ends (local). */
+      return NULL;
+
    case nir_intrinsic_ddx:
    case nir_intrinsic_ddx_coarse:
    case nir_intrinsic_ddx_fine:
